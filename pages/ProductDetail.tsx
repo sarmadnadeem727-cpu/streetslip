@@ -1,28 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useOutletContext } from 'react-router-dom';
-import { ALL_PRODUCTS } from '../constants';
+import { ALL_PRODUCTS, SOCIAL_LINKS } from '../constants';
 import { Product, CartContextType } from '../types';
-import { Star, ShieldCheck, ChevronLeft, ShoppingBag, Zap, Ruler, Truck, Banknote, Percent, X } from 'lucide-react';
+import { Star, ShieldCheck, ChevronLeft, ShoppingBag, Zap, Ruler, Truck, Banknote, Percent, X, Instagram, Facebook, Music2, MessageCircle, RefreshCw, HelpCircle, Mail } from 'lucide-react';
 
 import { motion, AnimatePresence } from 'framer-motion';
 
-const SizeGuideModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+const SizeGuideModal: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  product?: Product;
+  selectedSize: number;
+  onSelectSize: (size: number) => void;
+}> = ({ isOpen, onClose, product, selectedSize, onSelectSize }) => {
   const sizeData = [
-    { eur: 35, uk: 2.5, us: 3.5 },
-    { eur: 36, uk: 3.5, us: 4.5 },
-    { eur: 37, uk: 4, us: 5 },
-    { eur: 38, uk: 5, us: 6 },
-    { eur: 39, uk: 5.5, us: 6.5 },
-    { eur: 40, uk: 6.5, us: 7.5 },
-    { eur: 41, uk: 7, us: 8 },
-    { eur: 42, uk: 8, us: 9 },
-    { eur: 43, uk: 9, us: 10 },
-    { eur: 44, uk: 10, us: 11 },
-    { eur: 45, uk: 10.5, us: 11.5 },
-    { eur: 46, uk: 11, us: 12 },
-    { eur: 47, uk: 12, us: 13 },
-    { eur: 48, uk: 13, us: 14 },
+    { pk: 5, eu: 39 },
+    { pk: 6, eu: 40 },
+    { pk: 7, eu: 41 },
+    { pk: 8, eu: 42 },
+    { pk: 9, eu: 43 },
+    { pk: 10, eu: 44 },
+    { pk: 11, eu: 45 },
+    { pk: 12, eu: 46 },
   ];
 
   return (
@@ -64,20 +64,67 @@ const SizeGuideModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
 
               <div className="overflow-x-auto no-scrollbar border border-white/5 rounded-3xl bg-black/40">
                 <table className="w-full text-left border-collapse min-w-[600px]">
-                  <thead>
-                    <tr className="border-b border-white/10 bg-white/5">
-                      <th className="py-5 px-6 text-[10px] font-black uppercase tracking-[0.3em] text-[#00ff88] italic sticky left-0 bg-black/90 backdrop-blur-lg z-10">EUR</th>
-                      {sizeData.map(d => <th key={d.eur} className="py-5 px-4 text-sm font-black text-white italic text-center">{d.eur}</th>)}
-                    </tr>
-                  </thead>
                   <tbody className="font-medium italic">
-                    <tr className="border-b border-white/5">
-                      <td className="py-5 px-6 text-[10px] font-black uppercase tracking-[0.3em] text-[#00d4ff] sticky left-0 bg-black/90 backdrop-blur-lg z-10">UK</td>
-                      {sizeData.map(d => <td key={d.eur} className="py-5 px-4 text-sm text-gray-400 text-center">{d.uk}</td>)}
+                    <tr className="border-b border-white/10 bg-white/5">
+                      <th className="py-5 px-6 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-[#00ff88] italic sticky left-0 bg-black/90 backdrop-blur-lg z-20 shadow-[5px_0_15px_rgba(0,0,0,0.5)] border-r border-white/5">Pakistan Sizes</th>
+                      {sizeData.map(d => {
+                        const isAvailable = product?.sizes.includes(d.pk);
+                        const isOnyxPrime = product?.id === 'onyx-prime';
+                        const isNeonWave = product?.id === 'neon-wave';
+                        const isOutOfStock = (isOnyxPrime && d.pk === 10) || (isNeonWave && (d.pk === 7 || d.pk === 10));
+                        const isSelectable = isAvailable && !isOutOfStock;
+                        const isSelected = selectedSize === d.pk;
+
+                        return (
+                          <td
+                            key={`pk-${d.pk}`}
+                            onClick={() => {
+                              if (isSelectable) {
+                                onSelectSize(d.pk);
+                                onClose();
+                              }
+                            }}
+                            className={`py-5 px-4 text-center transition-all group border-l border-white/5 relative ${isSelectable ? 'cursor-pointer hover:bg-[#00ff88]/20' : 'opacity-30 bg-black/50'} ${isSelected ? 'bg-white/10' : ''}`}
+                          >
+                            <span className={`text-xl sm:text-2xl font-bold transition-colors pointer-events-none ${isSelected ? 'text-[#00ff88]' : isSelectable ? 'text-white group-hover:text-[#00ff88]' : 'text-gray-500'}`}>
+                              {d.pk}
+                            </span>
+                            <div className="absolute inset-x-0 bottom-1 flex justify-center w-full pointer-events-none">
+                              <div className="text-[8px] sm:text-[10px] uppercase tracking-widest font-black text-center whitespace-nowrap">
+                                {isSelected ? <span className="text-[#00ff88]">Selected</span> : isOutOfStock ? <span className="text-red-500">Out of Stock</span> : isAvailable ? <span className="text-[#00d4ff]">Available</span> : ''}
+                              </div>
+                            </div>
+                          </td>
+                        );
+                      })}
                     </tr>
-                    <tr className="bg-white/[0.02]">
-                      <td className="py-5 px-6 text-[10px] font-black uppercase tracking-[0.3em] text-[#ff0080] sticky left-0 bg-black/90 backdrop-blur-lg z-10">US (M)</td>
-                      {sizeData.map(d => <td key={d.eur} className="py-5 px-4 text-sm text-gray-400 text-center">{d.us}</td>)}
+                    <tr className="border-b border-white/5 bg-black/20">
+                      <th className="py-5 px-6 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-[#00d4ff] italic sticky left-0 bg-black/90 backdrop-blur-lg z-20 shadow-[5px_0_15px_rgba(0,0,0,0.5)] border-r border-white/5">EU (Euro) Sizes</th>
+                      {sizeData.map(d => {
+                        const isAvailable = product?.sizes.includes(d.pk);
+                        const isOnyxPrime = product?.id === 'onyx-prime';
+                        const isNeonWave = product?.id === 'neon-wave';
+                        const isOutOfStock = (isOnyxPrime && d.pk === 10) || (isNeonWave && (d.pk === 7 || d.pk === 10));
+                        const isSelectable = isAvailable && !isOutOfStock;
+                        const isSelected = selectedSize === d.pk;
+
+                        return (
+                          <td
+                            key={`eu-${d.eu}`}
+                            onClick={() => {
+                              if (isSelectable) {
+                                onSelectSize(d.pk);
+                                onClose();
+                              }
+                            }}
+                            className={`py-5 px-4 text-center transition-all group border-l border-white/5 ${isSelectable ? 'cursor-pointer hover:bg-[#00d4ff]/20' : 'opacity-30 bg-black/50'} ${isSelected ? 'bg-white/10' : ''}`}
+                          >
+                            <span className="text-lg sm:text-xl font-bold text-gray-300 pointer-events-none">
+                              {d.eu}
+                            </span>
+                          </td>
+                        );
+                      })}
                     </tr>
                   </tbody>
                 </table>
@@ -206,7 +253,13 @@ const ProductDetail: React.FC = () => {
 
   return (
     <div className="pt-24 sm:pt-32 pb-20 px-4 max-w-7xl mx-auto">
-      <SizeGuideModal isOpen={isSizeGuideOpen} onClose={() => setIsSizeGuideOpen(false)} />
+      <SizeGuideModal
+        isOpen={isSizeGuideOpen}
+        onClose={() => setIsSizeGuideOpen(false)}
+        product={product}
+        selectedSize={selectedSize}
+        onSelectSize={setSelectedSize}
+      />
 
       <motion.button
         initial={{ opacity: 0, x: -10 }}
@@ -344,19 +397,20 @@ const ProductDetail: React.FC = () => {
 
             {/* Sizes */}
             <div>
-              <div className="flex justify-between mb-6 items-end">
-                <p className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-500">Pick EU Size</p>
+              <div className="flex justify-between mb-6 items-center">
+                <p className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-500">Pick Size</p>
                 <button
                   onClick={() => setIsSizeGuideOpen(true)}
-                  className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#00ff88] hover:text-white transition-colors italic border-b border-[#00ff88]/50 pb-1"
+                  className="flex items-center gap-2 px-5 py-2.5 bg-white/5 hover:bg-white/10 text-sm sm:text-base font-black uppercase tracking-[0.2em] text-[#00ff88] hover:text-white transition-all italic border border-[#00ff88]/30 hover:border-[#00ff88] rounded-full shadow-[0_0_15px_rgba(0,255,136,0.1)] hover:shadow-[0_0_20px_rgba(0,255,136,0.3)] hover:scale-105"
                 >
-                  <Ruler className="h-3 w-3" /> Size Guide
+                  <Ruler className="h-5 w-5" /> Size Guide
                 </button>
               </div>
               <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 sm:gap-4">
                 {product.sizes.map((s) => {
                   const isOnyxPrime = product.id === 'onyx-prime';
-                  const isOutOfStock = isOnyxPrime && s === 10;
+                  const isNeonWave = product.id === 'neon-wave';
+                  const isOutOfStock = (isOnyxPrime && s === 10) || (isNeonWave && (s === 7 || s === 10));
                   const isLastPiece = isOnyxPrime && s === 9;
 
                   return (
@@ -366,9 +420,9 @@ const ProductDetail: React.FC = () => {
                           if (!isOutOfStock) setSelectedSize(s);
                         }}
                         disabled={isOutOfStock}
-                        className={`w-full h-12 sm:h-16 rounded-xl sm:rounded-2xl font-black text-sm sm:text-lg transition-all border-2 
+                        className={`w-full h-12 sm:h-16 rounded-xl sm:rounded-2xl font-black text-sm sm:text-lg transition-all duration-300 border-2 
                           ${isOutOfStock ? 'opacity-30 cursor-not-allowed bg-black/50 border-white/5' :
-                            selectedSize === s ? 'bg-white text-black border-white shadow-[0_0_30px_rgba(255,255,255,0.2)]' : 'glass border-white/5 hover:border-white/20'}`}
+                            selectedSize === s ? 'bg-white text-black border-white shadow-[0_0_30px_rgba(255,255,255,0.4)] scale-[1.02]' : 'glass border-white hover:border-[#00ff88] hover:text-[#00ff88] hover:shadow-[0_0_20px_rgba(0,255,136,0.4)] hover:scale-[1.02]'}`}
                       >
                         {s}
                       </button>
@@ -409,20 +463,90 @@ const ProductDetail: React.FC = () => {
             </div>
           </div>
 
-          {/* Contextual Trust Features */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 p-8 sm:p-12 glass rounded-[2.5rem] sm:rounded-[3.5rem] border-white/5">
-            <div className="flex items-center sm:flex-col sm:items-center sm:text-center gap-4">
-              <Banknote className="h-8 w-8 sm:h-10 sm:w-10 text-[#00ff88] shrink-0" />
-              <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-1 text-[#00ff88]">Pay on Delivery</p>
-                <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest leading-tight">Fast and secure delivery.</p>
+          {/* Contextual Features, Socials & Policies Tiles - Unified Grid */}
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 w-full">
+            {/* Pay on Delivery */}
+            <div className="relative aspect-square w-full">
+              <div className="absolute inset-0 flex flex-col items-center text-center justify-center gap-2 sm:gap-4 p-4 sm:p-6 glass rounded-3xl sm:rounded-[2.5rem] border-white/5 overflow-hidden transition-transform duration-300 hover:scale-[1.02]">
+                <Banknote className="h-8 w-8 sm:h-12 sm:w-12 text-[#00ff88] shrink-0" />
+                <div className="flex flex-col items-center">
+                  <p className="text-[9px] sm:text-[11px] font-black uppercase tracking-[0.2em] mb-1 sm:mb-2 text-[#00ff88] text-center">Pay on Delivery</p>
+                  <p className="text-gray-500 text-[8px] sm:text-[10px] font-bold uppercase tracking-widest leading-relaxed text-center">Fast & secure delivery.</p>
+                </div>
               </div>
             </div>
-            <div className="flex items-center sm:flex-col sm:items-center sm:text-center gap-4">
-              <Truck className="h-8 w-8 sm:h-10 sm:w-10 text-[#00d4ff] shrink-0" />
-              <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-1 text-[#00d4ff]">FREE SHIPPING</p>
-                <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest leading-tight">Nationwide Delivery: 4-6 Days</p>
+
+            {/* Free Shipping */}
+            <div className="relative aspect-square w-full">
+              <div className="absolute inset-0 flex flex-col items-center text-center justify-center gap-2 sm:gap-4 p-4 sm:p-6 glass rounded-3xl sm:rounded-[2.5rem] border-white/5 overflow-hidden transition-transform duration-300 hover:scale-[1.02]">
+                <Truck className="h-8 w-8 sm:h-12 sm:w-12 text-[#00d4ff] shrink-0" />
+                <div className="flex flex-col items-center">
+                  <p className="text-[9px] sm:text-[11px] font-black uppercase tracking-[0.2em] mb-1 sm:mb-2 text-[#00d4ff] text-center">FREE SHIPPING</p>
+                  <p className="text-gray-500 text-[8px] sm:text-[10px] font-bold uppercase tracking-widest leading-relaxed text-center">Nationwide: 4-6 Days</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Contextual Socials */}
+            <div className="relative aspect-square w-full">
+              <div className="absolute inset-0 glass rounded-3xl sm:rounded-[2.5rem] border-white/5 flex flex-col items-center text-center justify-center p-4 sm:p-6 overflow-hidden transition-transform duration-300 hover:scale-[1.02]">
+                <p className="text-[9px] sm:text-[11px] font-black uppercase tracking-[0.2em] mb-3 sm:mb-4 text-white text-center">Join Movement</p>
+                <div className="grid grid-cols-2 gap-2 sm:gap-3 w-full max-w-[120px] sm:max-w-[140px] mx-auto">
+                  <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="aspect-square bg-white/5 hover:bg-[#ff0080]/20 rounded-xl sm:rounded-2xl hover:text-[#ff0080] transition-colors border border-white/5 hover:border-[#ff0080]/30 flex items-center justify-center p-2 sm:p-3">
+                    <Instagram className="h-5 w-5 sm:h-7 sm:w-7" />
+                  </a>
+                  <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer" className="aspect-square bg-white/5 hover:bg-[#00d4ff]/20 rounded-xl sm:rounded-2xl hover:text-[#00d4ff] transition-colors border border-white/5 hover:border-[#00d4ff]/30 flex items-center justify-center p-2 sm:p-3">
+                    <Facebook className="h-5 w-5 sm:h-7 sm:w-7" />
+                  </a>
+                  <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noopener noreferrer" className="aspect-square bg-white/5 hover:bg-white/10 rounded-xl sm:rounded-2xl hover:text-white transition-colors border border-white/5 hover:border-white/30 flex items-center justify-center p-2 sm:p-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-5 w-5 sm:h-7 sm:w-7"
+                    >
+                      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+                    </svg>
+                  </a>
+                  <a href={`https://wa.me/${SOCIAL_LINKS.whatsapp.replace('+', '')}`} target="_blank" rel="noopener noreferrer" className="aspect-square bg-white/5 hover:bg-[#00ff88]/20 rounded-xl sm:rounded-2xl hover:text-[#00ff88] transition-colors border border-white/5 hover:border-[#00ff88]/30 flex items-center justify-center p-2 sm:p-3">
+                    <MessageCircle className="h-5 w-5 sm:h-7 sm:w-7" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Returns & Support Tile */}
+            <div className="relative aspect-square w-full">
+              <div className="absolute inset-0 glass rounded-3xl sm:rounded-[2.5rem] border-white/5 flex flex-col justify-center gap-3 sm:gap-4 p-5 sm:p-6 overflow-hidden transition-transform duration-300 hover:scale-[1.02]">
+                <div className="flex flex-col justify-center h-full gap-2 sm:gap-3 mt-1 sm:mt-0">
+                  <div className="flex flex-col gap-1 sm:gap-1.5">
+                    <div className="flex items-center gap-1.5 sm:gap-2 text-[#ff4d4d]">
+                      <RefreshCw className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
+                      <p className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.2em] truncate">Returns</p>
+                    </div>
+                    <p className="text-gray-400 text-[8px] sm:text-[9px] font-medium leading-[1.3] italic line-clamp-2">
+                      Exchanges in 7 days. Unworn & original packaging.
+                    </p>
+                  </div>
+
+                  <div className="h-px bg-white/10 w-full shrink-0 my-0.5 sm:my-1" />
+
+                  <div className="flex flex-col gap-1 sm:gap-1.5">
+                    <div className="flex items-center gap-1.5 sm:gap-2 text-[#00d4ff]">
+                      <HelpCircle className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
+                      <p className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.2em]">Support</p>
+                    </div>
+                    <a href="mailto:streetslipp@gmail.com" className="text-white text-[8px] sm:text-[9px] font-black uppercase tracking-[0.1em] hover:text-[#00d4ff] transition-colors flex items-center gap-1.5 inline-flex truncate w-full">
+                      <Mail className="h-3 w-3 shrink-0" /> <span className="truncate">streetslipp@gmail.com</span>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -112,11 +112,23 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-gray-500 font-bold uppercase text-[10px] tracking-[0.4em] italic">
-          <p>© 2026 STREETSLIPP. ALL RIGHTS RESERVED. THE ONLY VIBE THAT MATTERS.</p>
-          <div className="flex gap-10">
-            <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy</Link>
-            <Link to="/terms-of-service" className="hover:text-white transition-colors">Terms</Link>
+        <div className="pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+          <p className="text-white font-black uppercase text-xs sm:text-sm tracking-[0.3em] italic text-center md:text-left">
+            © 2026 STREETSLIPP. ALL RIGHTS RESERVED. <span className="text-[#00ff88]">THE ONLY VIBE THAT MATTERS.</span>
+          </p>
+          <div className="flex gap-4 sm:gap-6">
+            <Link
+              to="/privacy-policy"
+              className="px-6 py-3 rounded-full glass border border-white/10 hover:border-[#00ff88] text-white text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] transition-all hover:text-[#00ff88] shadow-lg hover:shadow-[0_0_20px_rgba(0,255,136,0.2)] flex items-center justify-center"
+            >
+              Privacy
+            </Link>
+            <Link
+              to="/terms-of-service"
+              className="px-6 py-3 rounded-full glass border border-white/10 hover:border-[#00ff88] text-white text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] transition-all hover:text-[#00ff88] shadow-lg hover:shadow-[0_0_20px_rgba(0,255,136,0.2)] flex items-center justify-center"
+            >
+              Terms
+            </Link>
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ import { ShieldCheck, Lock, Eye, Mail } from 'lucide-react';
 const PrivacyPolicy: React.FC = () => {
   return (
     <div className="pt-40 pb-32 px-4 max-w-4xl mx-auto">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="glass p-12 md:p-20 rounded-[4rem] border-white/5"
@@ -14,7 +14,7 @@ const PrivacyPolicy: React.FC = () => {
           <ShieldCheck className="h-10 w-10" />
           <h1 className="text-5xl font-black tracking-tight uppercase italic bebas">Privacy Policy</h1>
         </div>
-        
+
         <div className="space-y-12 text-gray-400 font-medium leading-relaxed">
           <section>
             <h2 className="text-2xl font-black text-white mb-6 uppercase tracking-widest flex items-center gap-3 bebas">
@@ -25,15 +25,6 @@ const PrivacyPolicy: React.FC = () => {
             </p>
             <p className="text-lg">
               When you check out using our Cash on Delivery system, your data is handled locally in Pakistan to ensure the fastest delivery through our logistics partners.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-black text-white mb-6 uppercase tracking-widest flex items-center gap-3 bebas">
-              <Lock className="h-6 w-6 text-[#ff0080]" /> Data Protection
-            </h2>
-            <p className="text-lg">
-              Your data isn't for sale. Period. We use it solely for order fulfillment and occasional "Fam Only" drops if you've signed up for our newsletter.
             </p>
           </section>
 
