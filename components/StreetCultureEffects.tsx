@@ -42,43 +42,33 @@ export const RGBGlitchTitle = ({ text, className = "tracking-tight" }: { text: s
             {/* Ghost Shadows */}
             <motion.div
                 style={{ x: useTransform(ghostX, (v) => v * 0.15), y: useTransform(ghostY, (v) => v * 0.15) }}
-                className={`absolute text-6xl sm:text-9xl font-black italic text-[#00ff88]/30 blur-sm pointer-events-none ${className}`}
+                className={`absolute flex flex-col items-center leading-[0.85] text-6xl sm:text-9xl font-black italic text-[#00ff88]/30 blur-sm pointer-events-none ${className}`}
             >
-                {text}
+                <span>STREET</span>
+                <span>SLIPP</span>
             </motion.div>
             <motion.div
                 style={{ x: useTransform(ghostX, (v) => v * 0.08), y: useTransform(ghostY, (v) => v * 0.08) }}
-                className={`absolute text-6xl sm:text-9xl font-black italic text-[#00d4ff]/20 blur-md pointer-events-none ${className}`}
+                className={`absolute flex flex-col items-center leading-[0.85] text-6xl sm:text-9xl font-black italic text-[#00d4ff]/20 blur-md pointer-events-none ${className}`}
             >
-                {text}
+                <span>STREET</span>
+                <span>SLIPP</span>
             </motion.div>
 
             {/* Main Title */}
             <motion.h1
                 variants={glitchVariants}
                 animate="animate"
-                className={`text-5xl sm:text-9xl font-black italic text-white relative z-10 ${className}`}
+                className={`flex flex-col items-center leading-[0.85] text-5xl sm:text-9xl font-black italic text-white relative z-10 ${className}`}
             >
-                {text}
+                <span>STREET</span>
+                <span>SLIPP</span>
             </motion.h1>
         </div>
     );
 };
 
-// 2. Graffiti Spotlight Background
 export const GraffitiSpotlight = () => {
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            mouseX.set(e.clientX);
-            mouseY.set(e.clientY);
-        };
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
-
     const tags = ["STREET", "SLIPP", "TRUST", "DRIP", "NO CAP", "CLOUD", "VIBE"];
 
     return (
@@ -98,16 +88,26 @@ export const GraffitiSpotlight = () => {
             {/* Spotlight Layer */}
             <motion.div
                 className="absolute inset-0 pointer-events-none z-10"
-                style={{
-                    background: useMotionTemplate`radial-gradient(200px circle at ${mouseX}px ${mouseY}px, rgba(0,255,136,0.15), transparent 80%)`,
+                animate={{
+                    background: [
+                        "radial-gradient(400px circle at 50% 50%, rgba(0,255,136,0.15), transparent 80%)",
+                        "radial-gradient(450px circle at 50% 50%, rgba(0,255,136,0.25), transparent 80%)",
+                        "radial-gradient(400px circle at 50% 50%, rgba(0,255,136,0.15), transparent 80%)"
+                    ]
                 }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             />
 
             <motion.div
                 className="absolute inset-0 pointer-events-none z-20 flex flex-wrap gap-20 p-20 items-center justify-center"
-                style={{
-                    maskImage: useMotionTemplate`radial-gradient(200px circle at ${mouseX}px ${mouseY}px, black, transparent)`,
+                animate={{
+                    maskImage: [
+                        "radial-gradient(400px circle at 50% 50%, black, transparent)",
+                        "radial-gradient(450px circle at 50% 50%, black, transparent)",
+                        "radial-gradient(400px circle at 50% 50%, black, transparent)"
+                    ]
                 }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
                 {Array.from({ length: 20 }).map((_, i) => (
                     <span
