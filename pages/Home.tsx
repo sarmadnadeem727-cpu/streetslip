@@ -349,9 +349,8 @@ const Home: React.FC = () => {
 
           <motion.div variants={itemVariants} className="max-w-2xl mx-auto">
             <p className="text-xl sm:text-3xl text-gray-300 leading-relaxed font-medium italic mb-8 sm:mb-12">
-              Secure payment at the door. <br className="hidden sm:block" />
-              Delivered via <span className="text-[#00ff88] font-bold">Premium Logistics</span>. <br />
-              <span className="uppercase font-black text-white not-italic tracking-widest leading-normal">
+              Delivered via <span className="text-[#00ff88] font-bold">PostEx</span>. <br />
+              <span className="uppercase font-black text-white not-italic tracking-[0.2em] sm:tracking-widest leading-loose sm:leading-normal">
                 Zero risk, total transparency. <br />
                 The way streetwear should be.
               </span>
