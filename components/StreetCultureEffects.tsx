@@ -198,43 +198,37 @@ export const HypeZipTie = () => {
 
 // 5. Spray Can Icon (Wiggles and releases particles)
 export const SprayCanIcon = () => {
-    const [isHovered, setIsHovered] = useState(false);
-
     return (
         <motion.div
-            className="relative cursor-pointer w-12 h-12 sm:w-20 sm:h-20"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            animate={isHovered ? {
+            className="relative w-12 h-12 sm:w-20 sm:h-20"
+            animate={{
                 rotate: [0, -10, 10, -10, 10, 0],
                 x: [0, -1, 1, -1, 1, 0]
-            } : {}}
-            transition={{ duration: 0.3, repeat: isHovered ? Infinity : 0 }}
+            }}
+            transition={{ duration: 0.3, repeat: Infinity, repeatDelay: 1 }}
         >
-            <svg viewBox="0 0 24 24" className={`w-full h-full ${isHovered ? 'text-[#00ff88]' : 'text-white/40'}`}>
+            <svg viewBox="0 0 24 24" className="w-full h-full text-[#00ff88]">
                 <path fill="currentColor" d="M16 10V8h-2V4h-4v4H8v2h8zM9 11v11h6V11H9z" />
                 <path fill="currentColor" d="M12 2a1 1 0 100 2 1 1 0 000-2z" opacity="0.5" />
             </svg>
 
             <AnimatePresence>
-                {isHovered && (
-                    <div className="absolute top-0 right-0 pointer-events-none">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ x: 0, y: 0, opacity: 1, scale: 0.5 }}
-                                animate={{
-                                    x: 20 + Math.random() * 30,
-                                    y: -20 - Math.random() * 30,
-                                    opacity: 0,
-                                    scale: 1.5
-                                }}
-                                transition={{ duration: 0.5, repeat: Infinity, delay: i * 0.1 }}
-                                className="absolute w-2 h-2 bg-[#00ff88] rounded-full blur-[2px]"
-                            />
-                        ))}
-                    </div>
-                )}
+                <div className="absolute top-0 right-0 pointer-events-none">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ x: 0, y: 0, opacity: 1, scale: 0.5 }}
+                            animate={{
+                                x: 20 + Math.random() * 30,
+                                y: -20 - Math.random() * 30,
+                                opacity: 0,
+                                scale: 1.5
+                            }}
+                            transition={{ duration: 0.5, repeat: Infinity, delay: i * 0.1 }}
+                            className="absolute w-2 h-2 bg-[#00ff88] rounded-full blur-[2px]"
+                        />
+                    ))}
+                </div>
             </AnimatePresence>
         </motion.div>
     );
@@ -290,7 +284,23 @@ export const MagneticIconWrapper = ({ children }: { children: React.ReactNode })
     }, []);
 
     return (
-        <motion.div ref={ref} style={{ x: springX, y: springY }}>
+        <motion.div
+            ref={ref}
+            style={{ x: springX, y: springY }}
+            animate={{
+                filter: [
+                    "drop-shadow(0 0 10px rgba(0, 255, 136, 0.4))",
+                    "drop-shadow(0 0 25px rgba(0, 255, 136, 0.8))",
+                    "drop-shadow(0 0 10px rgba(0, 255, 136, 0.4))"
+                ],
+                scale: [1, 1.05, 1]
+            }}
+            transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+            }}
+        >
             {children}
         </motion.div>
     );
