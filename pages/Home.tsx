@@ -152,15 +152,15 @@ const Home: React.FC = () => {
             <Link to="/collection" onClick={handleShopClick}>
               <motion.div
                 whileHover={{
-                  scale: 1.15,
-                  boxShadow: "0 0 50px rgba(0,255,136,0.6)",
-                  y: -10
+                  scale: 1.1,
+                  boxShadow: "0 0 40px rgba(0,255,136,0.6)",
+                  y: -5
                 }}
-                whileTap={{ scale: 0.9 }}
-                className="px-12 py-6 bg-white text-black font-black text-3xl sm:text-5xl flex items-center justify-center gap-5 transition-all rounded-full shadow-[0_0_30px_rgba(255,255,255,0.3)] group hover:bg-[#00ff88]"
+                whileTap={{ scale: 0.95 }}
+                className="px-10 sm:px-16 py-5 sm:py-6 bg-white text-black font-black text-2xl sm:text-4xl flex items-center justify-center gap-4 sm:gap-6 transition-all rounded-full shadow-[0_0_30px_rgba(255,255,255,0.3)] group hover:bg-[#00ff88]"
               >
-                <span className="font-mono tracking-wider italic uppercase">Shop The Drop</span>
-                <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
+                <span className="tracking-[0.2em] italic uppercase text-center w-full flex-1">Shop The Drop</span>
+                <ArrowRight className="w-6 h-6 sm:w-8 sm:h-8 group-hover:translate-x-2 transition-transform" />
               </motion.div>
             </Link>
           </div>
