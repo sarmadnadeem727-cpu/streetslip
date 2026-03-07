@@ -13,7 +13,8 @@ const SizeGuideModal: React.FC<{
   product?: Product;
   selectedSize: number;
   onSelectSize: (size: number) => void;
-}> = ({ isOpen, onClose, product, selectedSize, onSelectSize }) => {
+  selectedColor: { name: string; hex: string };
+}> = ({ isOpen, onClose, product, selectedSize, onSelectSize, selectedColor }) => {
   const sizeData = [
     { pk: 5, eu: 39 },
     { pk: 6, eu: 40 },
@@ -71,7 +72,11 @@ const SizeGuideModal: React.FC<{
                         const isAvailable = product?.sizes.includes(d.pk);
                         const isOnyxPrime = product?.id === 'onyx-prime';
                         const isNeonWave = product?.id === 'neon-wave';
-                        const isOutOfStock = (isOnyxPrime && d.pk === 10) || (isNeonWave && (d.pk === 7 || d.pk === 10));
+                        const legacyOutOfStock = (isOnyxPrime && d.pk === 10) || (isNeonWave && (d.pk === 7 || d.pk === 10));
+                        const isSizeExplicitlyOutOfStock = product?.outOfStockSizes?.some(
+                          (oos) => oos.size === d.pk && (!oos.colorHex || oos.colorHex === selectedColor.hex)
+                        );
+                        const isOutOfStock = legacyOutOfStock || isSizeExplicitlyOutOfStock;
                         const isSelectable = isAvailable && !isOutOfStock;
                         const isSelected = selectedSize === d.pk;
 
@@ -104,7 +109,11 @@ const SizeGuideModal: React.FC<{
                         const isAvailable = product?.sizes.includes(d.pk);
                         const isOnyxPrime = product?.id === 'onyx-prime';
                         const isNeonWave = product?.id === 'neon-wave';
-                        const isOutOfStock = (isOnyxPrime && d.pk === 10) || (isNeonWave && (d.pk === 7 || d.pk === 10));
+                        const legacyOutOfStock = (isOnyxPrime && d.pk === 10) || (isNeonWave && (d.pk === 7 || d.pk === 10));
+                        const isSizeExplicitlyOutOfStock = product?.outOfStockSizes?.some(
+                          (oos) => oos.size === d.pk && (!oos.colorHex || oos.colorHex === selectedColor.hex)
+                        );
+                        const isOutOfStock = legacyOutOfStock || isSizeExplicitlyOutOfStock;
                         const isSelectable = isAvailable && !isOutOfStock;
                         const isSelected = selectedSize === d.pk;
 
@@ -259,6 +268,7 @@ const ProductDetail: React.FC = () => {
         product={product}
         selectedSize={selectedSize}
         onSelectSize={setSelectedSize}
+        selectedColor={selectedColor}
       />
 
       <motion.button
@@ -410,7 +420,11 @@ const ProductDetail: React.FC = () => {
                 {product.sizes.map((s) => {
                   const isOnyxPrime = product.id === 'onyx-prime';
                   const isNeonWave = product.id === 'neon-wave';
-                  const isOutOfStock = (isOnyxPrime && s === 10) || (isNeonWave && (s === 7 || s === 10));
+                  const legacyOutOfStock = (isOnyxPrime && s === 10) || (isNeonWave && (s === 7 || s === 10));
+                  const isSizeExplicitlyOutOfStock = product.outOfStockSizes?.some(
+                    (oos) => oos.size === s && (!oos.colorHex || oos.colorHex === selectedColor.hex)
+                  );
+                  const isOutOfStock = legacyOutOfStock || isSizeExplicitlyOutOfStock;
                   const isLastPiece = isOnyxPrime && s === 9;
 
                   return (

@@ -12,6 +12,7 @@ export interface Product {
   description: string;
   isNew?: boolean;
   isHot?: boolean;
+  outOfStockSizes?: { colorHex?: string, size: number }[];
 }
 
 export interface Review {

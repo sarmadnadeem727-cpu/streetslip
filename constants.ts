@@ -31,7 +31,8 @@ export const ALL_PRODUCTS: Product[] = [
       "/images/phantom-blue2.jpg"
     ],
     description: "ELITE DROP: The Vortex Shadow in our exclusive 'Core Blue'. This article features a singular, deep blue core that dominates the urban landscape. Powered by 'Blue-Cloud' foam for 24/7 comfort.",
-    isHot: true
+    isHot: true,
+    outOfStockSizes: [{ colorHex: '#0000FF', size: 7 }]
   },
   {
     id: 'neon-wave',
@@ -48,6 +49,7 @@ export const ALL_PRODUCTS: Product[] = [
       "/images/nike-street-black2.jpg"
     ],
     description: "LAUNCH SPECIAL: Street-ready aesthetic with a classic vibe. Featuring a soft foam strap and responsive footbed for maximum daily comfort and drip.",
+    outOfStockSizes: [{ colorHex: '#000000', size: 8 }]
   },
   {
     id: 'onyx-prime',
