@@ -42,27 +42,30 @@ export const RGBGlitchTitle = ({ text, className = "tracking-tight" }: { text: s
             {/* Ghost Shadows */}
             <motion.div
                 style={{ x: useTransform(ghostX, (v) => v * 0.15), y: useTransform(ghostY, (v) => v * 0.15) }}
-                className={`absolute flex flex-col items-center leading-[0.85] text-6xl sm:text-9xl font-black italic text-[#00ff88]/30 blur-sm pointer-events-none ${className}`}
+                className={`absolute flex flex-col sm:flex-row items-center justify-center gap-x-6 leading-[0.85] text-6xl sm:text-9xl font-black italic text-[#00ff88]/30 blur-sm pointer-events-none ${className}`}
             >
-                <span>STREET</span>
-                <span>SLIPP</span>
+                {text.split(' ').map((word, idx) => (
+                    <span key={idx} className="block sm:inline">{word}</span>
+                ))}
             </motion.div>
             <motion.div
                 style={{ x: useTransform(ghostX, (v) => v * 0.08), y: useTransform(ghostY, (v) => v * 0.08) }}
-                className={`absolute flex flex-col items-center leading-[0.85] text-6xl sm:text-9xl font-black italic text-[#00d4ff]/20 blur-md pointer-events-none ${className}`}
+                className={`absolute flex flex-col sm:flex-row items-center justify-center gap-x-6 leading-[0.85] text-6xl sm:text-9xl font-black italic text-[#00d4ff]/20 blur-md pointer-events-none ${className}`}
             >
-                <span>STREET</span>
-                <span>SLIPP</span>
+                {text.split(' ').map((word, idx) => (
+                    <span key={idx} className="block sm:inline">{word}</span>
+                ))}
             </motion.div>
 
             {/* Main Title */}
             <motion.h1
                 variants={glitchVariants}
                 animate="animate"
-                className={`flex flex-col items-center leading-[0.85] text-5xl sm:text-9xl font-black italic text-white relative z-10 ${className}`}
+                className={`flex flex-col sm:flex-row items-center justify-center gap-x-6 leading-[0.85] text-5xl sm:text-9xl font-black italic text-white relative z-10 ${className}`}
             >
-                <span>STREET</span>
-                <span>SLIPP</span>
+                {text.split(' ').map((word, idx) => (
+                    <span key={idx} className="block sm:inline">{word}</span>
+                ))}
             </motion.h1>
         </div>
     );
