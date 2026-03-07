@@ -4,7 +4,7 @@ export const ALL_PRODUCTS: Product[] = [
   {
     id: 'apex-drift',
     name: "Apex Drift",
-    price: 2080,
+    price: 1800,
     originalPrice: 2600,
     category: 'men',
     colors: [{ name: 'Stealth Red', hex: '#FF0000' }],
@@ -19,7 +19,7 @@ export const ALL_PRODUCTS: Product[] = [
   {
     id: 'vortex-shadow',
     name: "Vortex Shadow",
-    price: 2250,
+    price: 2000,
     originalPrice: 2800,
     category: 'men',
     colors: [

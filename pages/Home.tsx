@@ -303,7 +303,7 @@ const Home: React.FC = () => {
           className="max-w-5xl mx-auto space-y-16 sm:space-y-24"
         >
           <div className="flex flex-col items-center">
-            <RGBGlitchTitle text="ELITE COMFORT" />
+            <RGBGlitchTitle text="ELITE COMFORT" className="tracking-[0.3em] sm:tracking-[0.4em]" />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 sm:gap-20 items-center justify-items-center">
