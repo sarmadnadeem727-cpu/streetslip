@@ -425,7 +425,9 @@ const ProductDetail: React.FC = () => {
                     (oos) => oos.size === s && (!oos.colorHex || oos.colorHex === selectedColor.hex)
                   );
                   const isOutOfStock = legacyOutOfStock || isSizeExplicitlyOutOfStock;
-                  const isLastPiece = isOnyxPrime && s === 9;
+                  const isLastPiece = product.lastPieceSizes?.some(
+                    (lps) => lps.size === s && (!lps.colorHex || lps.colorHex === selectedColor.hex)
+                  );
 
                   return (
                     <div key={s} className="flex flex-col items-center gap-1">
