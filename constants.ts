@@ -65,7 +65,7 @@ export const ALL_PRODUCTS: Product[] = [
       "/images/adidas-black2.jpg"
     ],
     description: "LAUNCH SPECIAL: The minimalist legend. Sleek, black, and purely functional. The Onyx Prime series is designed for those who let their walk do the talking.",
-    outOfStockSizes: [{ size: 9 }]
+    outOfStockSizes: [{ size: 7 }, { size: 9 }]
   },
   {
     id: 'neon-wave-electric',
