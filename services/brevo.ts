@@ -62,6 +62,12 @@ export const sendOrderConfirmationEmail = async (payload: OrderConfirmationPaylo
                 name: fullName
             }
         ],
+        bcc: [
+            {
+                email: "streetslipp@gmail.com",
+                name: "StreetSlipp Admin"
+            }
+        ],
         subject: "Order Confirmed - StreetSlipp",
         htmlContent: htmlContent
     };
