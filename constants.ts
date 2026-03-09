@@ -103,5 +103,6 @@ export const MOCK_REVIEWS: Review[] = [
   { id: 'r4', user: "Nomanabid5", rating: 5, comment: "Onyx Prime is classic. 2000 pkr for these is a joke, copped 2 pairs.", date: "Just now", verified: true },
   { id: 'r5', user: "zain_rocky", rating: 5, comment: "Electric Green Neon Waves are literal head-turners. The comfort is actually better than my expensive sneakers.", date: "2 days ago", verified: true },
   { id: 'r6', user: "fatima_dxb", rating: 5, comment: "Got my Vortex Shadows today. The quality is top-notch, and the packaging was super premium. Highly recommend!", date: "3 days ago", verified: true },
-  { id: 'r7', user: "hamza_vibes", rating: 5, comment: "Finally found slides that don't feel cheap. These are worth every penny. Delivery was smooth.", date: "4 days ago", verified: true }
+  { id: 'r7', user: "hamza_vibes", rating: 5, comment: "Finally found slides that don't feel cheap. These are worth every penny. Delivery was smooth.", date: "4 days ago", verified: true },
+  { id: 'r8', user: "tehniat.shaikh", rating: 5, comment: "New slides for the daily grind! Love the classic Adidas look and the adjustable strap makes them super comfy. Perfect for those quick errands or just chilling at home.🤍", date: "Just now", verified: true }
 ];
