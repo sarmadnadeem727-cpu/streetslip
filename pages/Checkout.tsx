@@ -4,7 +4,7 @@ import { CartContextType, CartItem } from '../types';
 import { SOCIAL_LINKS } from '../constants';
 import { ShieldCheck, Truck, Banknote, Search, MessageSquare, Sparkles, CheckCircle2, Copy, Printer } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { sendOrderConfirmationEmail } from '../services/brevo';
+import { sendOrderConfirmationEmail, sendAdminNotificationEmail } from '../services/brevo';
 import { BoxTruckLoader, ThermalPrinterReceipt } from '../components/CheckoutAnimations';
 import ErrorBoundary from '../components/ErrorBoundary';
 import html2canvas from 'html2canvas';
@@ -106,9 +106,24 @@ const Checkout: React.FC = () => {
       localStorage.setItem('streetslipp_shipping_info', JSON.stringify(formData));
     } catch (err) { }
 
-    const orderSummary = getOrderSummaryText();
+    // STEP 2: Send Admin Notification (Brevo)
+    try {
+      await sendAdminNotificationEmail({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        city: formData.city,
+        orderItems: currentItems,
+        totalPrice: currentTotal,
+        orderId: generatedId
+      });
+    } catch (adminError) {
+      console.error("Admin Notification Failed (Non-Fatal):", adminError);
+    }
 
-    // STEP 2: Send Notifications (Customer + Admin via Brevo BCC)
+    // STEP 3: Send Customer Notification (Brevo)
     try {
       await sendOrderConfirmationEmail({
         firstName: formData.firstName,

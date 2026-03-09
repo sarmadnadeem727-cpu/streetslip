@@ -62,12 +62,6 @@ export const sendOrderConfirmationEmail = async (payload: OrderConfirmationPaylo
                 name: fullName
             }
         ],
-        bcc: [
-            {
-                email: "streetslipp@gmail.com",
-                name: "StreetSlipp Admin"
-            }
-        ],
         subject: "Order Confirmed - StreetSlipp",
         htmlContent: htmlContent
     };
@@ -93,7 +87,72 @@ export const sendOrderConfirmationEmail = async (payload: OrderConfirmationPaylo
         return true;
 
     } catch (error) {
-        console.error("Critical Error sending Brevo logic:", error);
+        console.error("Critical Error sending Customer Brevo logic:", error);
+        return false;
+    }
+};
+
+export const sendAdminNotificationEmail = async (payload: OrderConfirmationPayload & { orderId: string }): Promise<boolean> => {
+    const { firstName, lastName, email, phone, address, city, orderItems, totalPrice, orderId } = payload;
+    const fullName = `${firstName} ${lastName}`;
+
+    const orderItemsString = orderItems
+        .map(item => `- ${item.name} (EU ${item.selectedSize}, ${item.selectedColor.name}) x${item.quantity}`)
+        .join('\n');
+
+    // Expected admin template exactly as requested (plain text wrapped in a simple pre tag for spacing)
+    const textContent = `👤 NEW ORDER RECEIVED!
+
+Order ID: ${orderId}
+Customer: ${fullName}
+Phone: ${phone}
+Email: ${email}
+
+Shipping Address:
+${address}, ${city}
+
+Items:
+${orderItemsString}
+
+Total: Rs. ${totalPrice}`;
+
+    const requestBody = {
+        sender: {
+            name: "StreetSlipp System",
+            email: "streetslipp@gmail.com"
+        },
+        to: [
+            {
+                email: "streetslipp@gmail.com",
+                name: "StreetSlipp Admin"
+            }
+        ],
+        subject: `New Order! Rs. ${totalPrice} - ${fullName}`,
+        textContent: textContent
+    };
+
+    try {
+        const response = await fetch(BREVO_URL, {
+            method: "POST",
+            headers: {
+                "api-key": BREVO_API_KEY,
+                "accept": "application/json",
+                "content-type": "application/json"
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Brevo Admin API Failed:", response.status, errorText);
+            return false;
+        }
+
+        console.log("Brevo Admin API called successfully. Notified streetslipp@gmail.com");
+        return true;
+
+    } catch (error) {
+        console.error("Critical Error sending Admin Brevo logic:", error);
         return false;
     }
 };
