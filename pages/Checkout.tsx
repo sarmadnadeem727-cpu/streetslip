@@ -112,8 +112,8 @@ const Checkout: React.FC = () => {
     // STEP 2: Admin Email Notification
     try {
       await emailjs.send(
-        'service_vr9e2cn',
-        'template_r2p0zqh',
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         {
           order_id: generatedId,
           tracking_number: "PENDING",
@@ -124,7 +124,7 @@ const Checkout: React.FC = () => {
           order_items: orderSummary,
           total_price: `Rs. ${finalTotal}`
         },
-        'TK5obsmQa9hOp1oKt'
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );
     } catch (emailError) {
       console.error("Admin EmailJS Logging Failed (Non-Fatal):", emailError);
