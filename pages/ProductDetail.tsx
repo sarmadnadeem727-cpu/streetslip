@@ -313,6 +313,10 @@ const ProductDetail: React.FC = () => {
                   (oos) => oos.size === selectedSize && (!oos.colorHex || oos.colorHex === selectedColor.hex)
                 );
 
+                const areAllSizesOutOfStock = product.sizes.every(s => 
+                  product.outOfStockSizes?.some(oos => oos.size === s && (!oos.colorHex || oos.colorHex === selectedColor.hex))
+                );
+
                 return isOutOfStock && (
                   <motion.div
                     initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
@@ -328,7 +332,9 @@ const ProductDetail: React.FC = () => {
                       <X className="h-12 w-12 sm:h-16 sm:w-16 text-red-500" />
                       <div>
                         <h3 className="text-3xl sm:text-5xl font-black italic uppercase tracking-tighter text-white mb-2 underline decoration-red-500 decoration-4">SOLD OUT</h3>
-                        <p className="text-gray-300 font-bold uppercase tracking-widest text-[10px] sm:text-xs">Size {selectedSize} is currently unavailable</p>
+                        <p className="text-gray-300 font-bold uppercase tracking-widest text-[10px] sm:text-xs">
+                          {areAllSizesOutOfStock ? "All sizes are currently out of stock" : `Size ${selectedSize} is currently unavailable`}
+                        </p>
                       </div>
                     </motion.div>
                   </motion.div>
