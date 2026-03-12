@@ -313,11 +313,9 @@ const ProductDetail: React.FC = () => {
                   (oos) => oos.size === selectedSize && (!oos.colorHex || oos.colorHex === selectedColor.hex)
                 );
 
-                const areAllSizesOutOfStock = product.sizes.every(s => 
-                  product.outOfStockSizes?.some(oos => oos.size === s && (!oos.colorHex || oos.colorHex === selectedColor.hex))
-                );
+                const isNeonWave = product.id === 'neon-wave';
 
-                return isOutOfStock && (
+                return isNeonWave && isOutOfStock && (
                   <motion.div
                     initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
                     animate={{ opacity: 1, backdropFilter: "blur(10px)" }}
@@ -333,7 +331,7 @@ const ProductDetail: React.FC = () => {
                       <div>
                         <h3 className="text-3xl sm:text-5xl font-black italic uppercase tracking-tighter text-white mb-2 underline decoration-red-500 decoration-4">SOLD OUT</h3>
                         <p className="text-gray-300 font-bold uppercase tracking-widest text-[10px] sm:text-xs">
-                          {areAllSizesOutOfStock ? "All sizes are currently out of stock" : `Size ${selectedSize} is currently unavailable`}
+                          All sizes are currently out of stock
                         </p>
                       </div>
                     </motion.div>
