@@ -49,8 +49,12 @@ export const ALL_PRODUCTS: Product[] = [
       "/images/nike-street-black2.jpg"
     ],
     description: "LAUNCH SPECIAL: Street-ready aesthetic with a classic vibe. Featuring a soft foam strap and responsive footbed for maximum daily comfort and drip.",
-    outOfStockSizes: [{ colorHex: '#000000', size: 8 }],
-    lastPieceSizes: [{ colorHex: '#000000', size: 9 }]
+    outOfStockSizes: [
+      { colorHex: '#000000', size: 7 },
+      { colorHex: '#000000', size: 8 },
+      { colorHex: '#000000', size: 9 },
+      { colorHex: '#000000', size: 10 }
+    ],
   },
   {
     id: 'onyx-prime',
@@ -65,7 +69,7 @@ export const ALL_PRODUCTS: Product[] = [
       "/images/adidas-black2.jpg"
     ],
     description: "LAUNCH SPECIAL: The minimalist legend. Sleek, black, and purely functional. The Onyx Prime series is designed for those who let their walk do the talking.",
-    outOfStockSizes: [{ size: 7 }, { size: 9 }]
+    outOfStockSizes: [{ size: 7 }, { size: 9 }, { size: 10 }]
   },
   {
     id: 'neon-wave-electric',

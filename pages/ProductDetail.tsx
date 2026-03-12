@@ -70,13 +70,10 @@ const SizeGuideModal: React.FC<{
                       <th className="py-5 px-6 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-[#00ff88] italic sticky left-0 bg-black/90 backdrop-blur-lg z-20 shadow-[5px_0_15px_rgba(0,0,0,0.5)] border-r border-white/5">Pakistan Sizes</th>
                       {sizeData.map(d => {
                         const isAvailable = product?.sizes.includes(d.pk);
-                        const isOnyxPrime = product?.id === 'onyx-prime';
-                        const isNeonWave = product?.id === 'neon-wave';
-                        const legacyOutOfStock = (isOnyxPrime && d.pk === 10) || (isNeonWave && (d.pk === 7 || d.pk === 10));
                         const isSizeExplicitlyOutOfStock = product?.outOfStockSizes?.some(
                           (oos) => oos.size === d.pk && (!oos.colorHex || oos.colorHex === selectedColor.hex)
                         );
-                        const isOutOfStock = legacyOutOfStock || isSizeExplicitlyOutOfStock;
+                        const isOutOfStock = isSizeExplicitlyOutOfStock;
                         const isSelectable = isAvailable && !isOutOfStock;
                         const isSelected = selectedSize === d.pk;
 
@@ -107,13 +104,10 @@ const SizeGuideModal: React.FC<{
                       <th className="py-5 px-6 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-[#00d4ff] italic sticky left-0 bg-black/90 backdrop-blur-lg z-20 shadow-[5px_0_15px_rgba(0,0,0,0.5)] border-r border-white/5">EU (Euro) Sizes</th>
                       {sizeData.map(d => {
                         const isAvailable = product?.sizes.includes(d.pk);
-                        const isOnyxPrime = product?.id === 'onyx-prime';
-                        const isNeonWave = product?.id === 'neon-wave';
-                        const legacyOutOfStock = (isOnyxPrime && d.pk === 10) || (isNeonWave && (d.pk === 7 || d.pk === 10));
                         const isSizeExplicitlyOutOfStock = product?.outOfStockSizes?.some(
                           (oos) => oos.size === d.pk && (!oos.colorHex || oos.colorHex === selectedColor.hex)
                         );
-                        const isOutOfStock = legacyOutOfStock || isSizeExplicitlyOutOfStock;
+                        const isOutOfStock = isSizeExplicitlyOutOfStock;
                         const isSelectable = isAvailable && !isOutOfStock;
                         const isSelected = selectedSize === d.pk;
 
@@ -311,6 +305,36 @@ const ProductDetail: React.FC = () => {
                 <span className="text-[10px] font-black uppercase tracking-[0.2em]">3D Interactive</span>
               </div>
             )}
+
+            {/* Out of Stock Overlay */}
+            <AnimatePresence>
+              {(() => {
+                const isOutOfStock = product.outOfStockSizes?.some(
+                  (oos) => oos.size === selectedSize && (!oos.colorHex || oos.colorHex === selectedColor.hex)
+                );
+
+                return isOutOfStock && (
+                  <motion.div
+                    initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                    animate={{ opacity: 1, backdropFilter: "blur(10px)" }}
+                    exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                    className="absolute inset-0 z-20 flex items-center justify-center bg-black/40"
+                  >
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0, rotate: -5 }}
+                      animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                      className="glass border-red-500/50 p-8 sm:p-12 flex flex-col items-center gap-4 text-center"
+                    >
+                      <X className="h-12 w-12 sm:h-16 sm:w-16 text-red-500" />
+                      <div>
+                        <h3 className="text-3xl sm:text-5xl font-black italic uppercase tracking-tighter text-white mb-2 underline decoration-red-500 decoration-4">SOLD OUT</h3>
+                        <p className="text-gray-300 font-bold uppercase tracking-widest text-[10px] sm:text-xs">Size {selectedSize} is currently unavailable</p>
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                );
+              })()}
+            </AnimatePresence>
           </motion.div>
           <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar snap-x px-2">
             {currentImages.map((img, idx) => (
@@ -418,13 +442,10 @@ const ProductDetail: React.FC = () => {
               </div>
               <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 sm:gap-4">
                 {product.sizes.map((s) => {
-                  const isOnyxPrime = product.id === 'onyx-prime';
-                  const isNeonWave = product.id === 'neon-wave';
-                  const legacyOutOfStock = (isOnyxPrime && s === 10) || (isNeonWave && (s === 7 || s === 10));
                   const isSizeExplicitlyOutOfStock = product.outOfStockSizes?.some(
                     (oos) => oos.size === s && (!oos.colorHex || oos.colorHex === selectedColor.hex)
                   );
-                  const isOutOfStock = legacyOutOfStock || isSizeExplicitlyOutOfStock;
+                  const isOutOfStock = isSizeExplicitlyOutOfStock;
                   const isLastPiece = product.lastPieceSizes?.some(
                     (lps) => lps.size === s && (!lps.colorHex || lps.colorHex === selectedColor.hex)
                   );
