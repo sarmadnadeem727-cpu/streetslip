@@ -480,28 +480,49 @@ const ProductDetail: React.FC = () => {
             </div>
 
             {/* CTA */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-              <motion.button
-                onClick={handleAddToCart}
-                disabled={isAdding}
-                whileHover={{ scale: 1.05, rotate: [0, -1, 1, -1, 0] }}
-                whileTap={{ scale: 0.95 }}
-                className={`flex-1 py-4 sm:py-10 rounded-full font-black text-lg sm:text-2xl flex items-center justify-center gap-4 transition-all shadow-2xl ${isAdding ? 'bg-gray-800' : 'glass border-[#00ff88] text-[#00ff88] hover:bg-[#00ff88]/10 uppercase italic tracking-tight'}`}
-              >
-                {isAdding ? <Zap className="animate-pulse h-6 w-6" /> : (
-                  <>
-                    <ShoppingBag className="h-6 w-6 sm:h-8 sm:h-8" /> Add to Bag
-                  </>
-                )}
-              </motion.button>
+            {(() => {
+              const isSelectedSizeOutOfStock = product.outOfStockSizes?.some(
+                (oos) => oos.size === selectedSize && (!oos.colorHex || oos.colorHex === selectedColor.hex)
+              );
+              const isNeonWave = product.id === 'neon-wave';
+              const shouldDisable = isSelectedSizeOutOfStock;
 
-              <button
-                onClick={handleBuyNow}
-                className="flex-[1.5] py-4 sm:py-10 bg-[#00ff88] text-black rounded-full font-black text-lg sm:text-2xl flex items-center justify-center gap-4 transition-all transform hover:scale-[1.02] active:scale-95 shadow-[0_0_50px_rgba(0,255,136,0.3)] uppercase italic tracking-tight"
-              >
-                <Zap className="h-6 w-6 sm:h-8" /> Buy Now with COD
-              </button>
-            </div>
+              return (
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                  <motion.button
+                    onClick={handleAddToCart}
+                    disabled={isAdding || shouldDisable}
+                    whileHover={shouldDisable ? {} : { scale: 1.05, rotate: [0, -1, 1, -1, 0] }}
+                    whileTap={shouldDisable ? {} : { scale: 0.95 }}
+                    className={`flex-1 py-4 sm:py-10 rounded-full font-black text-lg sm:text-2xl flex items-center justify-center gap-4 transition-all shadow-2xl ${
+                      shouldDisable 
+                        ? 'bg-gray-800/50 text-gray-500 border-white/5 cursor-not-allowed opacity-50' 
+                        : isAdding ? 'bg-gray-800' : 'glass border-[#00ff88] text-[#00ff88] hover:bg-[#00ff88]/10 uppercase italic tracking-tight'
+                    }`}
+                  >
+                    {isAdding ? <Zap className="animate-pulse h-6 w-6" /> : (
+                      <>
+                        <ShoppingBag className="h-6 w-6 sm:h-8 sm:h-8" /> 
+                        {shouldDisable ? 'OUT OF STOCK' : 'Add to Bag'}
+                      </>
+                    )}
+                  </motion.button>
+
+                  <button
+                    onClick={handleBuyNow}
+                    disabled={shouldDisable}
+                    className={`flex-[1.5] py-4 sm:py-10 rounded-full font-black text-lg sm:text-2xl flex items-center justify-center gap-4 transition-all transform shadow-[0_0_50px_rgba(0,255,136,0.3)] uppercase italic tracking-tight ${
+                      shouldDisable 
+                        ? 'bg-gray-800/50 text-gray-500 cursor-not-allowed opacity-50' 
+                        : 'bg-[#00ff88] text-black hover:scale-[1.02] active:scale-95'
+                    }`}
+                  >
+                    <Zap className="h-6 w-6 sm:h-8" /> 
+                    {shouldDisable ? 'DROPPED OUT' : 'Buy Now with COD'}
+                  </button>
+                </div>
+              );
+            })()}
           </div>
 
           {/* Contextual Features, Socials & Policies Tiles - Unified Grid */}
