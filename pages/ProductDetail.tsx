@@ -485,7 +485,7 @@ const ProductDetail: React.FC = () => {
                 (oos) => oos.size === selectedSize && (!oos.colorHex || oos.colorHex === selectedColor.hex)
               );
               const isNeonWave = product.id === 'neon-wave';
-              const shouldDisable = isSelectedSizeOutOfStock;
+              const shouldDisable = isNeonWave && isSelectedSizeOutOfStock;
 
               return (
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
