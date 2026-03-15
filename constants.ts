@@ -86,6 +86,7 @@ export const ALL_PRODUCTS: Product[] = [
       "/images/nike-street-green2.jpg"
     ],
     description: "LAUNCH SPECIAL: Street-ready aesthetic with a classic vibe. Featuring a soft foam strap and responsive footbed for maximum daily comfort and drip.",
+    outOfStockSizes: [{ size: 7 }, { size: 9 }]
   }
 ];
 
